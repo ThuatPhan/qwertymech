@@ -1,0 +1,22 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: user-service
+              uri: ${app.services.identity}
+              predicates:
+                - Path=${app.api-prefix}/identity/**
+              filters:
+                - StripPrefix=2
+
+app:
+  api-prefix: /api/v1
+  services:
+    identity: ${IDENTITY_SERVICE_URL:http://localhost:8081}

@@ -68,7 +68,6 @@ public class UserService {
         return userMapper.toUserResponse(savedUser);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public UserResponse getUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
@@ -86,7 +85,6 @@ public class UserService {
         return userRepository.findAll().stream().map(userMapper::toUserResponse).collect(Collectors.toList());
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public UserResponse updateUser(UserUpdateRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();

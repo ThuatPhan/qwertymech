@@ -1,8 +1,11 @@
-package org.example.identityservice.config;
+package org.example.productservice.config;
 
-import org.example.identityservice.constant.PredefinedRole;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -12,10 +15,6 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
-
 @Configuration
 @EnableMethodSecurity
 @RequiredArgsConstructor
@@ -23,26 +22,22 @@ import lombok.experimental.FieldDefaults;
 public class SecurityConfig {
     CustomJwtDecoder customJwtDecoder;
 
+    // spotless:off
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.authorizeHttpRequests(request -> request.requestMatchers(
-                        "/auth/**", "/users/register")
-                .permitAll()
-                .requestMatchers("/roles/**", "/permissions/**")
-                .hasRole(PredefinedRole.ADMIN_ROLE)
-                .anyRequest()
-                .authenticated());
+        httpSecurity.authorizeHttpRequests(request -> request
+                .requestMatchers(HttpMethod.GET, "/products/**", "/categories/**").permitAll()
+                .anyRequest().authenticated());
 
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
 
-        // spotless:off
         httpSecurity.oauth2ResourceServer(oauth2 -> oauth2
                 .jwt(jwtConfigurer -> jwtConfigurer.decoder(customJwtDecoder))
                 .authenticationEntryPoint(new CustomAuthEntryPoint()));
-        // spotless:on
 
         return httpSecurity.build();
     }
+    // spotless:on
 
     @Bean
     JwtAuthenticationConverter jwtAuthenticationConverter() {

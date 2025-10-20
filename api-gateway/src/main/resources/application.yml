@@ -9,10 +9,16 @@ spring:
       server:
         webflux:
           routes:
-            - id: user-service
+            - id: identity-service
               uri: ${app.services.identity}
               predicates:
                 - Path=${app.api-prefix}/identity/**
+              filters:
+                - StripPrefix=2
+            - id: product-service
+              uri: ${app.services.product}
+              predicates:
+                - Path=${app.api-prefix}/product/**
               filters:
                 - StripPrefix=2
 
@@ -20,3 +26,4 @@ app:
   api-prefix: /api/v1
   services:
     identity: ${IDENTITY_SERVICE_URL:http://localhost:8081}
+    product: ${PRODUCT_SERVICE_URL:http://localhost:8082}

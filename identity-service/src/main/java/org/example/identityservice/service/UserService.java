@@ -1,9 +1,11 @@
 package org.example.identityservice.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.example.event.dto.NotificationEvent;
 import org.example.identityservice.constant.PredefinedRole;
 import org.example.identityservice.dto.request.UserCreationRequest;
 import org.example.identityservice.dto.request.UserUpdateRequest;
@@ -15,6 +17,7 @@ import org.example.identityservice.exception.ErrorCode;
 import org.example.identityservice.mapper.UserMapper;
 import org.example.identityservice.repository.RoleRepository;
 import org.example.identityservice.repository.UserRepository;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -35,6 +38,7 @@ public class UserService {
     RoleRepository roleRepository;
     PasswordEncoder passwordEncoder;
     UserMapper userMapper;
+    KafkaTemplate<String, Object> kafkaTemplate;
 
     public UserResponse createUser(UserCreationRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
@@ -51,6 +55,15 @@ public class UserService {
         user.getRoles().add(userRole);
 
         User savedUser = userRepository.save(user);
+
+        NotificationEvent event = NotificationEvent.builder()
+                .channel("EMAIL")
+                .recipient(savedUser.getEmail())
+                .param(Map.of("firstName", savedUser.getFirstName(), "lastName", savedUser.getLastName()))
+                .build();
+
+        // Public message to Kafka topic
+        kafkaTemplate.send("notification-delivery", event);
 
         return userMapper.toUserResponse(savedUser);
     }

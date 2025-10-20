@@ -3,8 +3,10 @@ package org.example.identityservice.service;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
+import org.example.event.dto.NotificationEvent;
 import org.example.identityservice.config.OAuth2Config;
 import org.example.identityservice.constant.PredefinedRole;
 import org.example.identityservice.dto.request.*;
@@ -22,6 +24,7 @@ import org.example.identityservice.repository.RoleRepository;
 import org.example.identityservice.repository.UserRepository;
 import org.example.identityservice.repository.httpClient.OutboundIdentityClient;
 import org.example.identityservice.repository.httpClient.OutboundUserClient;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -46,6 +49,7 @@ public class AuthenticationService {
     OutboundIdentityClient outboundIdentityClient;
     OutboundUserClient outboundUserClient;
     RoleRepository roleRepository;
+    KafkaTemplate<String, Object> kafkaTemplate;
 
     public IntrospectResponse introspectToken(IntrospectRequest request) throws ParseException, JOSEException {
         boolean isValid = true;
@@ -143,6 +147,15 @@ public class AuthenticationService {
                     .roles(roles)
                     .build());
         });
+
+        NotificationEvent event = NotificationEvent.builder()
+                .channel("EMAIL")
+                .recipient(savedUser.getEmail())
+                .param(Map.of("firstName", savedUser.getFirstName(), "lastName", savedUser.getLastName()))
+                .build();
+
+        // Public message to Kafka topic
+        kafkaTemplate.send("notification-delivery", event);
 
         return savedUser;
     }

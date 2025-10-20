@@ -39,10 +39,10 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
     String API_PREFIX;
 
     String[] publicEndpoints = {
-            "/identity/auth(/.*)?",
+            "/identity/auth/.*",
             "/identity/users/register",
+            "/product/.*"
     };
-
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {

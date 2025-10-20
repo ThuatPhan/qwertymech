@@ -28,7 +28,7 @@ import lombok.experimental.FieldDefaults;
 public class AuthenticationController {
     AuthenticationService authenticationService;
 
-    @PostMapping
+    @PostMapping("/authenticate")
     public ApiResponse<AuthenticationResponse> authenticate(@RequestBody @Valid AuthenticationRequest request)
             throws JOSEException {
         return ApiResponse.success(authenticationService.authenticate(request));

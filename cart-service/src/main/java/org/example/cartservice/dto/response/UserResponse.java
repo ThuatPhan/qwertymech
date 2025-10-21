@@ -1,4 +1,4 @@
-package org.example.identityservice.dto.response;
+package org.example.cartservice.dto.response;
 
 import java.util.Set;
 

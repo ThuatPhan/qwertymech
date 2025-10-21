@@ -1,8 +1,8 @@
-package org.example.identityservice.exception;
+package org.example.cartservice.exception;
 
 import java.util.Objects;
 
-import org.example.identityservice.dto.response.ApiResponse;
+import org.example.cartservice.dto.response.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -35,6 +35,15 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(errorCode.getStatusCode()).body(response);
     }
 
+    @ExceptionHandler(value = AppException.class)
+    public ResponseEntity<ApiResponse<?>> handlingAppException(AppException exception) {
+        ErrorCode errorCode = exception.getErrorCode();
+
+        ApiResponse<?> response = ApiResponse.error(errorCode.getCode(), errorCode.getMessage());
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<?>> handlingMethodArgumentNotValidException(
             MethodArgumentNotValidException exception) {
@@ -44,14 +53,5 @@ public class GlobalExceptionHandler {
                 Objects.requireNonNull(exception.getFieldError()).getDefaultMessage());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-    }
-
-    @ExceptionHandler(value = AppException.class)
-    public ResponseEntity<ApiResponse<?>> handlingAppException(AppException exception) {
-        ErrorCode errorCode = exception.getErrorCode();
-
-        ApiResponse<?> response = ApiResponse.error(errorCode.getCode(), errorCode.getMessage());
-
-        return ResponseEntity.status(errorCode.getStatusCode()).body(response);
     }
 }

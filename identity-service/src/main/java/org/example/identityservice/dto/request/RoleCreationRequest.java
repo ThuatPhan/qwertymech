@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -15,10 +16,10 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RoleCreationRequest {
-    @Max(value = 30, message = "Name can't longer than 30 characters")
+    @Size(max = 30, message = "Name can't longer than 30 characters")
     @NotBlank(message = "Name can't be blank")
     String name;
 
-    @Min(value = 1, message = "Role must have at least one permission")
+    @Size(min = 1, message = "Role must have at least one permission")
     Set<@NotBlank(message = "Each permission must have a name") String> permissions;
 }

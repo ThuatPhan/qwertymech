@@ -1,5 +1,9 @@
 package org.example.productservice.service;
 
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.example.productservice.dto.request.ProductCreationRequest;
 import org.example.productservice.dto.request.ProductUpdateRequest;
 import org.example.productservice.dto.response.PageResponse;
@@ -91,5 +95,11 @@ public class ProductService {
             throw new AppException(ErrorCode.PRODUCT_NOT_FOUND);
         }
         productRepository.deleteById(id);
+    }
+
+    public List<ProductResponse> getProductByIds(Set<String> productIds) {
+        return productRepository.findAllById(productIds).stream()
+                .map(productMapper::toProductResponse)
+                .collect(Collectors.toList());
     }
 }

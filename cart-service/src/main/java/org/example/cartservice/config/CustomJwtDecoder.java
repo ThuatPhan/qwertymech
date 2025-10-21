@@ -1,4 +1,4 @@
-package org.example.productservice.config;
+package org.example.cartservice.config;
 
 import java.text.ParseException;
 

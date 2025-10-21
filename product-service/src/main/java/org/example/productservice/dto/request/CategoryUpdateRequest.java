@@ -13,4 +13,6 @@ import lombok.experimental.FieldDefaults;
 public class CategoryUpdateRequest {
     @Size(min = 5, max = 100, message = "Category name can't be longer than 100 characters")
     String name;
+
+    String image;
 }

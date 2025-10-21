@@ -3,6 +3,7 @@ package org.example.identityservice.dto.request;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
 
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -12,10 +13,10 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PermissionUpdateRequest {
-    @Max(value = 30, message = "Name can't longer than 30 characters")
+    @Size(max = 30, message = "Name can't longer than 30 characters")
     @NotBlank(message = "Name can't be blank")
     String name;
 
-    @Max(value = 50, message = "Description can't longer than 50 characters")
+    @Size(max = 50, message = "Description can't longer than 50 characters")
     String description;
 }

@@ -1,4 +1,4 @@
-package org.example.identityservice.dto.response;
+package org.example.cartservice.dto.response;
 
 import java.util.Set;
 
@@ -10,10 +10,8 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserResponse {
+public class RoleResponse {
     String id;
-    String firstName;
-    String lastName;
-    String avatar;
-    Set<RoleResponse> roles;
+    String name;
+    Set<PermissionResponse> permissions;
 }

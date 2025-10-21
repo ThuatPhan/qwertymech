@@ -15,4 +15,6 @@ public class CategoryCreationRequest {
     @Size(min = 5, max = 100, message = "Category name can't be longer than 100 characters")
     @NotBlank(message = "Name can't be blank")
     String name;
+
+    String image;
 }

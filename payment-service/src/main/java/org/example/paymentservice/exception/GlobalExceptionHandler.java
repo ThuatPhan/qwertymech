@@ -1,10 +1,11 @@
-package org.example.orderservice.exception;
+package org.example.paymentservice.exception;
 
 import java.util.Objects;
 
-import org.example.orderservice.dto.response.ApiResponse;
+import org.example.paymentservice.dto.response.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.listener.CommonErrorHandler;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -14,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
-public class GlobalExceptionHandler {
+public class GlobalExceptionHandler implements CommonErrorHandler {
     @ExceptionHandler(value = RuntimeException.class)
     public ResponseEntity<ApiResponse<?>> handlingRuntimeException(RuntimeException exception) {
         ErrorCode errorCode = ErrorCode.UNCATEGORIZED_ERROR;

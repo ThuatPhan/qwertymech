@@ -1,0 +1,26 @@
+server:
+  servlet:
+    context-path: /payment
+  port: 8085
+spring:
+  application:
+    name: payment-service
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9094}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+payment:
+  vnpay:
+    tmn-code: ${TMN_CODE}
+    secret-key: ${SECRET_KEY}
+    pay-url: ${PAY_URL:https://sandbox.vnpayment.vn/paymentv2/vpcpay.html}
+    return-url: ${RETURN_URL:http://localhost:8080/api/v1/payment/vnpay/callback}
+    command: pay
+    order-type: other
+    version: 2.1.0
+
+app:
+  services:
+    order: ${ORDER_SERVICE_URL:http://localhost:8084}

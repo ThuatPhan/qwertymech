@@ -13,7 +13,11 @@ import org.example.orderservice.dto.response.ProductResponse;
 import org.example.orderservice.dto.response.UserResponse;
 import org.example.orderservice.entity.Order;
 import org.example.orderservice.entity.OrderItem;
+import org.example.orderservice.enums.OrderStatus;
 import org.example.orderservice.enums.PaymentMethod;
+import org.example.orderservice.enums.PaymentStatus;
+import org.example.orderservice.exception.AppException;
+import org.example.orderservice.exception.ErrorCode;
 import org.example.orderservice.mapper.OrderMapper;
 import org.example.orderservice.repository.OrderRepository;
 import org.example.orderservice.repository.httpClient.IdentityClient;
@@ -92,6 +96,13 @@ public class OrderService {
         return orderResponse;
     }
 
+    public OrderResponse getOrder(Long id) {
+        Order order = orderRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_FOUND));
+        Set<String> productIds =
+                order.getItems().stream().map(OrderItem::getProductId).collect(Collectors.toSet());
+        return orderMapper.toOrderResponse(order, orderHelper.getProductsMapByIds(productIds));
+    }
+
     public PageResponse<OrderResponse> getOrders(int page, int size, boolean all) {
         UserResponse user = identityClient.getUser().getData();
 
@@ -107,5 +118,15 @@ public class OrderService {
         Map<String, ProductResponse> productsMap = orderHelper.getProductsMapByIds(allProductIds);
 
         return PageResponse.from(pageData, (order) -> orderMapper.toOrderResponse(order, productsMap));
+    }
+
+    public void markOrderAsPaid(Long id, PaymentStatus paymentStatus) {
+        Order order = orderRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_FOUND));
+        if (paymentStatus.equals(PaymentStatus.SUCCESS)) {
+            order.setStatus(OrderStatus.CONFIRMED);
+        }
+        order.setPaymentStatus(paymentStatus);
+
+        orderRepository.save(order);
     }
 }

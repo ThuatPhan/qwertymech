@@ -1,0 +1,50 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: identity-service
+              uri: ${app.services.identity}
+              predicates:
+                - Path=${app.api-prefix}/identity/**
+              filters:
+                - StripPrefix=2
+            - id: product-service
+              uri: ${app.services.product}
+              predicates:
+                - Path=${app.api-prefix}/product/**
+              filters:
+                - StripPrefix=2
+            - id: cart-service
+              uri: ${app.services.cart}
+              predicates:
+                - Path=${app.api-prefix}/cart/**
+              filters:
+                - StripPrefix=2
+            - id: order-service
+              uri: ${app.services.order}
+              predicates:
+                - Path=${app.api-prefix}/order/**
+              filters:
+                - StripPrefix=2
+            - id: payment-service
+              uri: ${app.services.payment}
+              predicates:
+                - Path=${app.api-prefix}/payment/**
+              filters:
+                - StripPrefix=2
+
+app:
+  api-prefix: /api/v1
+  services:
+    identity: ${IDENTITY_SERVICE_URL:http://localhost:8081}
+    product: ${PRODUCT_SERVICE_URL:http://localhost:8082}
+    cart: ${CART_SERVICE_URL:http://localhost:8083}
+    order: ${ORDER_SERVICE_URL:http://localhost:8084}
+    payment: ${PAYMENT_SERVICE_URL:http://localhost:8085}

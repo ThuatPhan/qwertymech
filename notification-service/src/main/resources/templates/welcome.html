@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chào mừng đến với QwertyMech</title>
+</head>
+<body style="margin:0; padding:0; background-color:#ffffff; font-family:Arial, sans-serif; color:#333333;">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;">
+    <tr>
+        <td style="padding:24px;">
+            <h2 style="color:#d32f2f; font-size:20px; margin:0 0 16px 0;">Chào mừng đến với QwertyMech!</h2>
+
+            <p style="margin:0 0 12px 0;">Xin chào <b th:text="${name}">Nguyễn Văn A</b>,</p>
+
+            <p style="margin:0 0 12px 0;">Cảm ơn bạn đã đăng ký tài khoản tại <b>QwertyMech</b>.</p>
+
+            <p style="margin:0 0 12px 0;">
+                Địa chỉ email đăng ký:
+                <a th:href="'mailto:' + ${email}" style="color:#d32f2f;" th:text="${email}">email@example.com</a>
+            </p>
+
+            <p style="margin:0 0 20px 0;">
+                Truy cập ngay để quản lý tài khoản và trải nghiệm mua sắm dễ dàng hơn:
+            </p>
+
+            <a th:href="@{https://qwertymech.com/account}"
+               style="background-color:#d32f2f; color:#ffffff; text-decoration:none;
+                          padding:10px 18px; border-radius:4px; font-weight:bold;">
+                Đến cửa hàng của chúng tôi
+            </a>
+
+            <p style="margin:24px 0 12px 0;">
+                Nếu bạn có bất kỳ câu hỏi nào, vui lòng liên hệ với chúng tôi qua email
+                <a href="mailto:support@qwertymech.com" style="color:#d32f2f;">support@qwertymech.com</a>.
+            </p>
+
+            <p style="margin:0;">Thân mến,<br><b>Đội ngũ QwertyMech</b></p>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

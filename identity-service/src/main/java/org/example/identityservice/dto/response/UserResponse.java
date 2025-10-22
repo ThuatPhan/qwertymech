@@ -14,6 +14,7 @@ public class UserResponse {
     String id;
     String firstName;
     String lastName;
+    String email;
     String avatar;
     Set<RoleResponse> roles;
 }

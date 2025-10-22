@@ -58,6 +58,7 @@ public class UserService {
 
         NotificationEvent event = NotificationEvent.builder()
                 .channel("EMAIL")
+                .templateCode("welcome")
                 .recipient(savedUser.getEmail())
                 .param(Map.of("firstName", savedUser.getFirstName(), "lastName", savedUser.getLastName()))
                 .build();
@@ -73,6 +74,12 @@ public class UserService {
         String email = authentication.getName();
 
         User user = userRepository.findByEmail(email).orElseThrow(() -> new AppException(ErrorCode.UNAUTHENTICATED));
+
+        return userMapper.toUserResponse(user);
+    }
+
+    public UserResponse getUser(String id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.UNAUTHENTICATED));
 
         return userMapper.toUserResponse(user);
     }

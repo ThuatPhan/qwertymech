@@ -11,6 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
         url = "${app.services.identity}",
         configuration = {AuthenticationRequestInterceptor.class})
 public interface IdentityClient {
-    @GetMapping("/internal/users/info")
+    @GetMapping("/internal/users/my-info")
     ApiResponse<UserResponse> getUser();
 }

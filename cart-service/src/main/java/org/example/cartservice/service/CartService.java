@@ -21,12 +21,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
@@ -106,7 +106,8 @@ public class CartService {
 
         CartItem savedItem = cartItemRepository.save(cartItem);
 
-        ProductResponse productResponse = productClient.getProductById(cartItem.getProductId()).getData();
+        ProductResponse productResponse =
+                productClient.getProductById(cartItem.getProductId()).getData();
 
         return cartItemMapper.mapToCartItemResponse(savedItem, productResponse);
     }

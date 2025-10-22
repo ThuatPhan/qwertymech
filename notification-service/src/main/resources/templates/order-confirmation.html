@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xác nhận đơn hàng QwertyMech</title>
+    <style>
+        .item-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+        }
+        .item-table th, .item-table td {
+            border: 1px solid #dddddd;
+            padding: 10px;
+            text-align: left;
+        }
+        .item-table th {
+            background-color: #f9f9f9;
+            font-weight: bold;
+        }
+        .text-right {
+            text-align: right;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .total-row td {
+            padding-top: 16px;
+            font-size: 18px;
+            font-weight: bold;
+            border: 0;
+        }
+        .total-price {
+            color: #d32f2f;
+        }
+    </style>
+</head>
+<body style="margin:0; padding:0; background-color:#ffffff; font-family:Arial, sans-serif; color:#333333;">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;">
+    <tr>
+        <td style="padding:24px;">
+            <h2 style="color:#d32f2f; font-size:20px; margin:0 0 16px 0;">Cảm ơn bạn đã đặt hàng!</h2>
+
+            <p style="margin:0 0 12px 0;">Xin chào <b th:text="${name}">Nguyễn Văn A</b>,</p>
+
+            <p style="margin:0 0 12px 0;">
+                <b>QwertyMech</b> đã nhận được đơn hàng của bạn. Chúng tôi sẽ xử lý và gửi hàng cho bạn trong thời gian sớm nhất.
+            </p>
+
+            <p style="margin:0 0 12px 0;">
+                Mã đơn hàng: <b th:text="${order.id}">#ORD123456</b>
+            </p>
+            <p style="margin:0 0 20px 0;">
+                Ngày đặt hàng: <b th:text="${#temporals.format(order.createdAt, 'dd-MM-yyyy HH:mm')}">22-10-2025 08:30</b>
+            </p>
+
+            <h3 style="color:#333333; font-size:18px; margin:0 0 16px 0; border-bottom: 2px solid #eeeeee; padding-bottom: 8px;">
+                Chi tiết đơn hàng
+            </h3>
+
+            <table class="item-table">
+                <thead>
+                <tr>
+                    <th>Tên sản phẩm</th>
+                    <th class="text-right">Giá</th>
+                    <th class="text-center">Số lượng</th>
+                    <th class="text-right">Thành tiền</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item : ${order.items}">
+                    <td th:text="${item.product.name}">Tên sản phẩm mẫu</td>
+                    <td class="text-right" th:text="${#numbers.formatDecimal(item.unitPrice, 0, 'COMMA', 0, 'POINT')} + ' ₫'">500.000 ₫</td>
+                    <td class="text-center" th:text="${item.quantity}">2</td>
+                    <td class="text-right" th:text="${#numbers.formatDecimal(item.subTotal, 0, 'COMMA', 0, 'POINT')} + ' ₫'">1.000.000 ₫</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <table style="width: 100%; border: 0;">
+                <tbody>
+                <tr class="total-row">
+                    <td class="text-right" style="padding-right: 16px;">Tổng tiền:</td>
+                    <td class="text-right total-price" th:text="${#numbers.formatDecimal(order.totalPrice, 0, 'COMMA', 0, 'POINT')} + ' ₫'">
+                        1.000.000 ₫
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <p style="margin:24px 0 20px 0;">
+                Bạn có thể xem chi tiết đơn hàng và theo dõi trạng thái vận chuyển bằng cách nhấn vào nút bên dưới:
+            </p>
+
+            <a th:href="@{'https://qwertymech.com/orders/' + ${order.id}}"
+               style="background-color:#d32f2f; color:#ffffff; text-decoration:none;
+                          padding:10px 18px; border-radius:4px; font-weight:bold;">
+                Xem chi tiết đơn hàng
+            </a>
+
+            <p style="margin:24px 0 12px 0;">
+                Nếu bạn có bất kỳ câu hỏi nào, vui lòng liên hệ với chúng tôi qua email
+                <a href="mailto:support@qwertymech.com" style="color:#d32f2f;">support@qwertymech.com</a>.
+            </p>
+
+            <p style="margin:0;">Thân mến,<br><b>Đội ngũ QwertyMech</b></p>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

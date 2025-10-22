@@ -1,7 +1,5 @@
 package org.example.cartservice.dto.response;
 
-import java.util.Set;
-
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -14,6 +12,6 @@ public class UserResponse {
     String id;
     String firstName;
     String lastName;
+    String email;
     String avatar;
-    Set<RoleResponse> roles;
 }

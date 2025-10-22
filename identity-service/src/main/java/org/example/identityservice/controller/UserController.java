@@ -29,8 +29,13 @@ public class UserController {
         return ApiResponse.success(userService.createUser(request));
     }
 
-    @GetMapping("/info")
-    public ApiResponse<UserResponse> getUser() {
+    @GetMapping("/info/{id}")
+    public ApiResponse<UserResponse> getUser(@PathVariable String id) {
+        return ApiResponse.success(userService.getUser(id));
+    }
+
+    @GetMapping("/my-info")
+    public ApiResponse<UserResponse> getMyInfo() {
         return ApiResponse.success(userService.getUser());
     }
 

@@ -27,6 +27,12 @@ spring:
                 - Path=${app.api-prefix}/cart/**
               filters:
                 - StripPrefix=2
+            - id: cart-service
+              uri: ${app.services.order}
+              predicates:
+                - Path=${app.api-prefix}/order/**
+              filters:
+                - StripPrefix=2
 
 app:
   api-prefix: /api/v1
@@ -34,3 +40,4 @@ app:
     identity: ${IDENTITY_SERVICE_URL:http://localhost:8081}
     product: ${PRODUCT_SERVICE_URL:http://localhost:8082}
     cart: ${CART_SERVICE_URL:http://localhost:8083}
+    order: ${ORDER_SERVICE_URL:http://localhost:8084}

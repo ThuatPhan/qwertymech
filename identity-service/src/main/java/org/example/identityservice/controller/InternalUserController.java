@@ -16,7 +16,7 @@ import lombok.experimental.FieldDefaults;
 public class InternalUserController {
     UserService userService;
 
-    @GetMapping("/info")
+    @GetMapping("/my-info")
     public ApiResponse<UserResponse> getUser() {
         return ApiResponse.success(userService.getUser());
     }

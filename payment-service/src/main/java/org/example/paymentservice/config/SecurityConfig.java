@@ -1,4 +1,4 @@
-package org.example.orderservice.config;
+package org.example.paymentservice.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +26,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeHttpRequests(request -> request
-                .requestMatchers("/internal/**").permitAll()
+                .requestMatchers("/vnpay/callback").permitAll()
                 .anyRequest().authenticated());
 
         httpSecurity.csrf(AbstractHttpConfigurer::disable);

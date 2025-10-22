@@ -11,6 +11,7 @@ import org.example.productservice.exception.ErrorCode;
 import org.example.productservice.mapper.CategoryMapper;
 import org.example.productservice.repository.CategoryRepository;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,7 @@ public class CategoryService {
     CategoryMapper categoryMapper;
 
     @PreAuthorize("hasRole('ADMIN')")
+    @CacheEvict(value = "categories", allEntries = true)
     public CategoryResponse createCategory(CategoryCreationRequest request) {
         boolean isCategoryExists = categoryRepository.existsByName(request.getName());
         if (isCategoryExists) {
@@ -38,18 +40,21 @@ public class CategoryService {
         return categoryMapper.toCategoryResponse(savedCategory);
     }
 
+    @Cacheable(value = "categories", key = "'id::' +#id")
     public CategoryResponse getCategory(String id) {
         Category category =
                 categoryRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_FOUND));
         return categoryMapper.toCategoryResponse(category);
     }
 
+    @Cacheable(value = "categories")
     public List<CategoryResponse> getAllCategories() {
         List<Category> categories = categoryRepository.findAll();
         return categories.stream().map(categoryMapper::toCategoryResponse).toList();
     }
 
     @PreAuthorize("hasRole('ADMIN')")
+    @CacheEvict(value = "categories", allEntries = true)
     public CategoryResponse updateCategory(String id, CategoryUpdateRequest request) {
         Category category =
                 categoryRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_FOUND));

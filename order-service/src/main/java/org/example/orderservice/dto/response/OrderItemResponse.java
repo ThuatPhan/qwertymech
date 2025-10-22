@@ -1,5 +1,6 @@
 package org.example.orderservice.dto.response;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 import lombok.*;
@@ -10,7 +11,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class OrderItemResponse {
+public class OrderItemResponse implements Serializable {
     ProductResponse product;
     Integer quantity;
     BigDecimal unitPrice;

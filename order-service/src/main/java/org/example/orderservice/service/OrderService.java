@@ -22,6 +22,8 @@ import org.example.orderservice.mapper.OrderMapper;
 import org.example.orderservice.repository.OrderRepository;
 import org.example.orderservice.repository.httpClient.IdentityClient;
 import org.example.orderservice.util.OrderHelper;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -51,6 +53,7 @@ public class OrderService {
     ObjectMapper objectMapper;
 
     @Transactional
+    @CacheEvict(value = "orders", allEntries = true)
     public OrderResponse createOrder(OrderCreationRequest request) {
         Order order = orderMapper.toOrder(request);
 
@@ -96,6 +99,7 @@ public class OrderService {
         return orderResponse;
     }
 
+    @Cacheable(value = "orders", key = "'id::' + #id")
     public OrderResponse getOrder(Long id) {
         Order order = orderRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_FOUND));
         Set<String> productIds =
@@ -103,6 +107,7 @@ public class OrderService {
         return orderMapper.toOrderResponse(order, orderHelper.getProductsMapByIds(productIds));
     }
 
+    @Cacheable(value = "orders", key = "'page::' + #page + '::size::' + #size + '::all::' + #all")
     public PageResponse<OrderResponse> getOrders(int page, int size, boolean all) {
         UserResponse user = identityClient.getUser().getData();
 
@@ -120,6 +125,7 @@ public class OrderService {
         return PageResponse.from(pageData, (order) -> orderMapper.toOrderResponse(order, productsMap));
     }
 
+    @CacheEvict(value = "orders", allEntries = true)
     public void markOrderAsPaid(Long id, PaymentStatus paymentStatus) {
         Order order = orderRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_FOUND));
         if (paymentStatus.equals(PaymentStatus.SUCCESS)) {

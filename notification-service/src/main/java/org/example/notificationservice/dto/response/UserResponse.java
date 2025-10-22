@@ -1,4 +1,4 @@
-package org.example.cartservice.dto.response;
+package org.example.notificationservice.dto.response;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,8 +8,10 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PermissionResponse {
+public class UserResponse {
     String id;
-    String name;
-    String description;
+    String firstName;
+    String lastName;
+    String email;
+    String avatar;
 }

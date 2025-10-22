@@ -1,4 +1,4 @@
-package org.example.notificationservice.dto;
+package org.example.notificationservice.dto.response;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,8 +8,6 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class SendEmailRequest {
-    String recipient;
-    String subject;
-    String htmlContent;
+public class SendEmailResponse {
+    String emailId;
 }

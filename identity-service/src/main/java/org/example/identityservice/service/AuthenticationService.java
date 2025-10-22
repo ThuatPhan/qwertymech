@@ -150,6 +150,7 @@ public class AuthenticationService {
 
         NotificationEvent event = NotificationEvent.builder()
                 .channel("EMAIL")
+                .templateCode("welcome")
                 .recipient(savedUser.getEmail())
                 .param(Map.of("firstName", savedUser.getFirstName(), "lastName", savedUser.getLastName()))
                 .build();

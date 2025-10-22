@@ -16,6 +16,8 @@ import org.example.productservice.mapper.ProductMapper;
 import org.example.productservice.repository.CategoryRepository;
 import org.example.productservice.repository.ProductRepository;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -38,6 +40,7 @@ public class ProductService {
     ProductMapper productMapper;
 
     @PreAuthorize("hasRole('ADMIN')")
+    @CacheEvict(value = "products", allEntries = true)
     public ProductResponse createProduct(ProductCreationRequest request) {
         if (productRepository.existsByName(request.getName())) {
             throw new AppException(ErrorCode.PRODUCT_ALREADY_EXISTS);
@@ -54,12 +57,14 @@ public class ProductService {
         return productMapper.toProductResponse(savedProduct);
     }
 
+    @Cacheable(value = "products", key = "'id::' + #id")
     public ProductResponse getProduct(String id) {
         Product product =
                 productRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND));
         return productMapper.toProductResponse(product);
     }
 
+    @Cacheable(value = "products", key = "'page::' + #page + '::size::' + #size")
     public PageResponse<ProductResponse> getAllProducts(int page, int size) {
         Sort sort = Sort.by("createdAt").descending();
         Pageable pageable = PageRequest.of(page - 1, size, sort);
@@ -68,6 +73,8 @@ public class ProductService {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
+    @CacheEvict(value = "products", allEntries = true)
+    @CachePut(value = "products", key = "'id::' + #id")
     public ProductResponse updateProduct(String id, ProductUpdateRequest request) {
         Product product =
                 productRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND));

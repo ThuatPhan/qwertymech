@@ -1,5 +1,6 @@
 package org.example.productservice.dto.response;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
@@ -14,7 +15,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PageResponse<T> {
+public class PageResponse<T> implements Serializable {
     List<T> data;
     int currentPage;
     int pageSize;

@@ -57,7 +57,10 @@ public class VNPayService {
                         .param(Map.of("orderId", orderId, "status", responseCode.equals("00") ? "success" : "failed"))
                         .build());
 
-        return VNPayResponse.builder().code(responseCode).message(responseCode.equals("00") ? "success" : "failed").build();
+        return VNPayResponse.builder()
+                .code(responseCode)
+                .message(responseCode.equals("00") ? "success" : "failed")
+                .build();
     }
 
     private Map<String, String> buildParams(HttpServletRequest request, Long orderId, long amount) {

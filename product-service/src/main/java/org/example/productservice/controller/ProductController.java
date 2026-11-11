@@ -2,9 +2,9 @@ package org.example.productservice.controller;
 
 import jakarta.validation.Valid;
 
+import org.example.common.dto.ApiResponse;
 import org.example.productservice.dto.request.ProductCreationRequest;
 import org.example.productservice.dto.request.ProductUpdateRequest;
-import org.example.productservice.dto.response.ApiResponse;
 import org.example.productservice.dto.response.PageResponse;
 import org.example.productservice.dto.response.ProductResponse;
 import org.example.productservice.service.ProductService;

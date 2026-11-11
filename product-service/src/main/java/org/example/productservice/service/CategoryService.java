@@ -2,12 +2,12 @@ package org.example.productservice.service;
 
 import java.util.List;
 
+import org.example.common.exception.AppException;
 import org.example.productservice.dto.request.CategoryCreationRequest;
 import org.example.productservice.dto.request.CategoryUpdateRequest;
 import org.example.productservice.dto.response.CategoryResponse;
 import org.example.productservice.entity.Category;
-import org.example.productservice.exception.AppException;
-import org.example.productservice.exception.ErrorCode;
+import org.example.productservice.exception.ProductErrorCode;
 import org.example.productservice.mapper.CategoryMapper;
 import org.example.productservice.repository.CategoryRepository;
 import org.springframework.cache.annotation.CacheEvict;
@@ -33,7 +33,7 @@ public class CategoryService {
     public CategoryResponse createCategory(CategoryCreationRequest request) {
         boolean isCategoryExists = categoryRepository.existsByName(request.getName());
         if (isCategoryExists) {
-            throw new AppException(ErrorCode.CATEGORY_ALREADY_EXISTS);
+            throw new AppException(ProductErrorCode.CATEGORY_ALREADY_EXISTS);
         }
         Category newCategory = categoryMapper.toCategory(request);
         Category savedCategory = categoryRepository.save(newCategory);
@@ -42,8 +42,9 @@ public class CategoryService {
 
     @Cacheable(value = "categories", key = "'id::' +#id")
     public CategoryResponse getCategory(String id) {
-        Category category =
-                categoryRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_FOUND));
+        Category category = categoryRepository
+                .findById(id)
+                .orElseThrow(() -> new AppException(ProductErrorCode.CATEGORY_NOT_FOUND));
         return categoryMapper.toCategoryResponse(category);
     }
 
@@ -56,12 +57,13 @@ public class CategoryService {
     @PreAuthorize("hasRole('ADMIN')")
     @CacheEvict(value = "categories", allEntries = true)
     public CategoryResponse updateCategory(String id, CategoryUpdateRequest request) {
-        Category category =
-                categoryRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_FOUND));
+        Category category = categoryRepository
+                .findById(id)
+                .orElseThrow(() -> new AppException(ProductErrorCode.CATEGORY_NOT_FOUND));
 
         boolean isCategoryExists = categoryRepository.existsByNameAndIdNot(id, request.getName());
         if (isCategoryExists) {
-            throw new AppException(ErrorCode.CATEGORY_ALREADY_EXISTS);
+            throw new AppException(ProductErrorCode.CATEGORY_ALREADY_EXISTS);
         }
 
         Category updatedCategory = categoryMapper.updateCategory(request, category);
@@ -72,8 +74,9 @@ public class CategoryService {
     @PreAuthorize("hasRole('ADMIN')")
     @CacheEvict(value = "categories", allEntries = true)
     public void deleteCategory(String id) {
-        Category category =
-                categoryRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_FOUND));
+        Category category = categoryRepository
+                .findById(id)
+                .orElseThrow(() -> new AppException(ProductErrorCode.CATEGORY_NOT_FOUND));
         categoryRepository.delete(category);
     }
 }

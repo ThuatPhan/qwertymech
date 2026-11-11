@@ -4,11 +4,11 @@ import java.text.ParseException;
 
 import jakarta.validation.Valid;
 
-import org.example.common.dto.ApiResponse;
 import org.example.identityservice.dto.request.AuthenticationRequest;
 import org.example.identityservice.dto.request.IntrospectRequest;
 import org.example.identityservice.dto.request.LogoutRequest;
 import org.example.identityservice.dto.request.RefreshTokenRequest;
+import org.example.identityservice.dto.response.ApiResponse;
 import org.example.identityservice.dto.response.AuthenticationResponse;
 import org.example.identityservice.dto.response.IntrospectResponse;
 import org.example.identityservice.service.AuthenticationService;

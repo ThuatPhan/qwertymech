@@ -9,13 +9,13 @@ import org.example.cartservice.dto.request.CartItemCreationRequest;
 import org.example.cartservice.dto.response.*;
 import org.example.cartservice.entity.Cart;
 import org.example.cartservice.entity.CartItem;
-import org.example.cartservice.exception.CartErrorCode;
+import org.example.cartservice.exception.AppException;
+import org.example.cartservice.exception.ErrorCode;
 import org.example.cartservice.mapper.CartItemMapper;
 import org.example.cartservice.repository.CartItemRepository;
 import org.example.cartservice.repository.CartRepository;
 import org.example.cartservice.repository.httpClient.IdentityClient;
 import org.example.cartservice.repository.httpClient.ProductClient;
-import org.example.common.exception.AppException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -100,7 +100,7 @@ public class CartService {
 
     public CartItemResponse updateItemQuantity(String id, int quantity) {
         CartItem cartItem =
-                cartItemRepository.findById(id).orElseThrow(() -> new AppException(CartErrorCode.CART_ITEM_NOT_FOUND));
+                cartItemRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.CART_ITEM_NOT_FOUND));
 
         cartItem.setQuantity(quantity);
 
@@ -114,7 +114,7 @@ public class CartService {
 
     public void deleteItem(String id) {
         CartItem cartItem =
-                cartItemRepository.findById(id).orElseThrow(() -> new AppException(CartErrorCode.CART_ITEM_NOT_FOUND));
+                cartItemRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.CART_ITEM_NOT_FOUND));
 
         cartItemRepository.delete(cartItem);
     }

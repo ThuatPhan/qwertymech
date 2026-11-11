@@ -4,9 +4,9 @@ import java.util.List;
 
 import jakarta.validation.Valid;
 
-import org.example.common.dto.ApiResponse;
 import org.example.identityservice.dto.request.PermissionCreationRequest;
 import org.example.identityservice.dto.request.PermissionUpdateRequest;
+import org.example.identityservice.dto.response.ApiResponse;
 import org.example.identityservice.dto.response.PermissionResponse;
 import org.example.identityservice.service.PermissionService;
 import org.springframework.http.HttpStatus;

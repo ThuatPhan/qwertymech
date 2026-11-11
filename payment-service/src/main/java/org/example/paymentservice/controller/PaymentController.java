@@ -2,8 +2,8 @@ package org.example.paymentservice.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-import org.example.common.dto.ApiResponse;
 import org.example.paymentservice.dto.VNPayResponse;
+import org.example.paymentservice.dto.response.ApiResponse;
 import org.example.paymentservice.service.VNPayService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

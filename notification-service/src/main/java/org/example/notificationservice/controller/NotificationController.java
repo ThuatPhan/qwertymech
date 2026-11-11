@@ -1,6 +1,5 @@
 package org.example.notificationservice.controller;
 
-import org.example.common.exception.AppException;
 import org.example.event.dto.NotificationEvent;
 import org.example.notificationservice.dto.request.SendEmailRequest;
 import org.example.notificationservice.dto.response.SendEmailResponse;
@@ -10,6 +9,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.resend.core.exception.ResendException;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +39,7 @@ public class NotificationController {
                     .build());
 
             log.info("Email sent successfully to: {} with id: {}", event.getRecipient(), response.getEmailId());
-        } catch (AppException exception) {
+        } catch (ResendException exception) {
             log.error("Failed to send email to: {}", event.getRecipient(), exception);
         }
     }

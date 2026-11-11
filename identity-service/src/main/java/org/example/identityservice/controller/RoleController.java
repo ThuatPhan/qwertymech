@@ -4,9 +4,9 @@ import java.util.List;
 
 import jakarta.validation.Valid;
 
-import org.example.common.dto.ApiResponse;
 import org.example.identityservice.dto.request.RoleCreationRequest;
 import org.example.identityservice.dto.request.RoleUpdateRequest;
+import org.example.identityservice.dto.response.ApiResponse;
 import org.example.identityservice.dto.response.RoleResponse;
 import org.example.identityservice.service.RoleService;
 import org.springframework.http.HttpStatus;

@@ -1,9 +1,7 @@
 package org.example.notificationservice.service;
 
-import org.example.common.exception.AppException;
 import org.example.notificationservice.dto.request.SendEmailRequest;
 import org.example.notificationservice.dto.response.SendEmailResponse;
-import org.example.notificationservice.exception.NotificationErrorCode;
 import org.springframework.stereotype.Service;
 
 import com.resend.Resend;
@@ -23,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 public class EmailService {
     Resend resend;
 
-    public SendEmailResponse sendEmail(SendEmailRequest request) {
+    public SendEmailResponse sendEmail(SendEmailRequest request) throws ResendException {
         CreateEmailOptions params = CreateEmailOptions.builder()
                 .from("QwertyMech <sales@myec2.shop>")
                 .to(request.getRecipient())
@@ -31,12 +29,7 @@ public class EmailService {
                 .html(request.getHtmlContent())
                 .build();
 
-        CreateEmailResponse response;
-        try {
-            response = resend.emails().send(params);
-        } catch (ResendException exception) {
-            throw new AppException(NotificationErrorCode.EMAIL_SENDING_FAILED, "Failed to send email", exception);
-        }
+        CreateEmailResponse response = resend.emails().send(params);
 
         return SendEmailResponse.builder().emailId(response.getId()).build();
     }

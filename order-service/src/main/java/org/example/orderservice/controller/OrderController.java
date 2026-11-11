@@ -2,8 +2,8 @@ package org.example.orderservice.controller;
 
 import jakarta.validation.Valid;
 
+import org.example.common.dto.ApiResponse;
 import org.example.orderservice.dto.request.OrderCreationRequest;
-import org.example.orderservice.dto.response.ApiResponse;
 import org.example.orderservice.dto.response.OrderResponse;
 import org.example.orderservice.dto.response.PageResponse;
 import org.example.orderservice.service.OrderService;

@@ -4,14 +4,14 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.example.common.exception.AppException;
 import org.example.productservice.dto.request.ProductCreationRequest;
 import org.example.productservice.dto.request.ProductUpdateRequest;
 import org.example.productservice.dto.response.PageResponse;
 import org.example.productservice.dto.response.ProductResponse;
 import org.example.productservice.entity.Category;
 import org.example.productservice.entity.Product;
-import org.example.productservice.exception.AppException;
-import org.example.productservice.exception.ErrorCode;
+import org.example.productservice.exception.ProductErrorCode;
 import org.example.productservice.mapper.ProductMapper;
 import org.example.productservice.repository.CategoryRepository;
 import org.example.productservice.repository.ProductRepository;
@@ -43,12 +43,12 @@ public class ProductService {
     @CacheEvict(value = "products", allEntries = true)
     public ProductResponse createProduct(ProductCreationRequest request) {
         if (productRepository.existsByName(request.getName())) {
-            throw new AppException(ErrorCode.PRODUCT_ALREADY_EXISTS);
+            throw new AppException(ProductErrorCode.PRODUCT_ALREADY_EXISTS);
         }
 
         Category category = categoryRepository
                 .findById(request.getCategory())
-                .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_FOUND));
+                .orElseThrow(() -> new AppException(ProductErrorCode.CATEGORY_NOT_FOUND));
 
         Product product = productMapper.toProduct(request);
         product.setCategory(category);
@@ -60,7 +60,7 @@ public class ProductService {
     @Cacheable(value = "products", key = "'id::' + #id")
     public ProductResponse getProduct(String id) {
         Product product =
-                productRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND));
+                productRepository.findById(id).orElseThrow(() -> new AppException(ProductErrorCode.PRODUCT_NOT_FOUND));
         return productMapper.toProductResponse(product);
     }
 
@@ -77,17 +77,17 @@ public class ProductService {
     @CachePut(value = "products", key = "'id::' + #id")
     public ProductResponse updateProduct(String id, ProductUpdateRequest request) {
         Product product =
-                productRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND));
+                productRepository.findById(id).orElseThrow(() -> new AppException(ProductErrorCode.PRODUCT_NOT_FOUND));
 
         if (request.getCategory() != null && !request.getCategory().isBlank()) {
             Category category = categoryRepository
                     .findById(request.getCategory())
-                    .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_FOUND));
+                    .orElseThrow(() -> new AppException(ProductErrorCode.CATEGORY_NOT_FOUND));
             product.setCategory(category);
         }
 
         if (productRepository.existsByNameAndIdNot(id, request.getName())) {
-            throw new AppException(ErrorCode.PRODUCT_ALREADY_EXISTS);
+            throw new AppException(ProductErrorCode.PRODUCT_ALREADY_EXISTS);
         }
 
         productMapper.updateProduct(product, request);
@@ -99,7 +99,7 @@ public class ProductService {
     @CacheEvict(value = "products", allEntries = true)
     public void deleteProduct(String id) {
         if (!productRepository.existsById(id)) {
-            throw new AppException(ErrorCode.PRODUCT_NOT_FOUND);
+            throw new AppException(ProductErrorCode.PRODUCT_NOT_FOUND);
         }
         productRepository.deleteById(id);
     }

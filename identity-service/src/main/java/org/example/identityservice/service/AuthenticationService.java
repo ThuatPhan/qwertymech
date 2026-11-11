@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.example.common.exception.AppException;
+import org.example.common.exception.CommonErrorCode;
 import org.example.event.dto.NotificationEvent;
 import org.example.identityservice.config.OAuth2Config;
 import org.example.identityservice.constant.PredefinedRole;
@@ -17,8 +19,7 @@ import org.example.identityservice.dto.response.UserInfoResponse;
 import org.example.identityservice.entity.InvalidateToken;
 import org.example.identityservice.entity.Role;
 import org.example.identityservice.entity.User;
-import org.example.identityservice.exception.AppException;
-import org.example.identityservice.exception.ErrorCode;
+import org.example.identityservice.exception.IdentityErrorCode;
 import org.example.identityservice.repository.InvalidateTokenRepository;
 import org.example.identityservice.repository.RoleRepository;
 import org.example.identityservice.repository.UserRepository;
@@ -66,13 +67,13 @@ public class AuthenticationService {
     public AuthenticationResponse authenticate(AuthenticationRequest request) throws JOSEException {
         User user = userRepository
                 .findByEmail(request.getEmail())
-                .orElseThrow(() -> new AppException(ErrorCode.UNAUTHENTICATED));
+                .orElseThrow(() -> new AppException(CommonErrorCode.UNAUTHENTICATED));
 
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
 
         boolean isPasswordMatches = passwordEncoder.matches(request.getPassword(), user.getPassword());
         if (!isPasswordMatches) {
-            throw new AppException(ErrorCode.INVALID_PASSWORD);
+            throw new AppException(IdentityErrorCode.INVALID_PASSWORD);
         }
 
         return AuthenticationResponse.builder()
@@ -103,7 +104,8 @@ public class AuthenticationService {
         invalidateTokenRepository.save(invalidatedToken);
 
         String email = signedJWT.getJWTClaimsSet().getSubject();
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new AppException(ErrorCode.UNAUTHENTICATED));
+        User user =
+                userRepository.findByEmail(email).orElseThrow(() -> new AppException(CommonErrorCode.UNAUTHENTICATED));
 
         String newAccessToken = jwtService.generateToken(user);
 

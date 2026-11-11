@@ -1,6 +1,6 @@
 package org.example.orderservice.controller;
 
-import org.example.orderservice.dto.response.ApiResponse;
+import org.example.common.dto.ApiResponse;
 import org.example.orderservice.dto.response.OrderResponse;
 import org.example.orderservice.service.OrderService;
 import org.springframework.web.bind.annotation.GetMapping;

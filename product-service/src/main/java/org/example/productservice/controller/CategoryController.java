@@ -4,9 +4,9 @@ import java.util.List;
 
 import jakarta.validation.Valid;
 
+import org.example.common.dto.ApiResponse;
 import org.example.productservice.dto.request.CategoryCreationRequest;
 import org.example.productservice.dto.request.CategoryUpdateRequest;
-import org.example.productservice.dto.response.ApiResponse;
 import org.example.productservice.dto.response.CategoryResponse;
 import org.example.productservice.service.CategoryService;
 import org.springframework.http.HttpStatus;

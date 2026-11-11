@@ -3,56 +3,22 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.6</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <groupId>org.example</groupId>
+        <artifactId>qwertymech</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <groupId>org.example</groupId>
     <artifactId>cart-service</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
     <name>cart-service</name>
     <description>cart-service</description>
-    <url/>
-    <licenses>
-        <license/>
-    </licenses>
-    <developers>
-        <developer/>
-    </developers>
-    <scm>
-        <connection/>
-        <developerConnection/>
-        <tag/>
-        <url/>
-    </scm>
-    <properties>
-        <java.version>21</java.version>
-        <spring-cloud.version>2025.0.0</spring-cloud.version>
-        <spotless.version>2.43.0</spotless.version>
-        <org.mapstruct.version>1.6.3</org.mapstruct.version>
-    </properties>
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
-
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
+            <groupId>org.example</groupId>
+            <artifactId>common-lib</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -76,14 +42,8 @@
             <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
-            <version>${org.mapstruct.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -97,7 +57,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <annotationProcessorPaths>
+                    <annotationProcessorPaths combine.self="override">
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
@@ -113,43 +73,10 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>com.diffplug.spotless</groupId>
                 <artifactId>spotless-maven-plugin</artifactId>
-                <version>${spotless.version}</version>
-                <configuration>
-                    <java>
-                        <removeUnusedImports/>
-                        <toggleOffOn/>
-                        <trimTrailingWhitespace/>
-                        <endWithNewline/>
-                        <indent>
-                            <tabs>true</tabs>
-                            <spacesPerTab>4</spacesPerTab>
-                        </indent>
-                        <palantirJavaFormat/>
-                        <importOrder>
-                            <order>java,jakarta,org,com,com.diffplug,</order>
-                        </importOrder>
-                    </java>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>apply</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

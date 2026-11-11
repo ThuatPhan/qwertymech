@@ -1,9 +1,9 @@
 package org.example.orderservice.dto.response;
 
+import java.io.Serializable;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.io.Serializable;
 
 @Data
 @NoArgsConstructor

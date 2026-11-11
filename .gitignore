@@ -1,5 +1,21 @@
+# Build output
+target/
+
+# Maven wrapper (not used in this repo)
+.mvn/
+mvnw
+mvnw.cmd
+
 # IDE files
 /.idea
+*.iml
+*.iws
+*.ipr
+.vscode/
+.classpath
+.project
+.settings/
+.factorypath
 
 # Compiled class file
 *.class
@@ -7,13 +23,7 @@
 # Log file
 *.log
 
-# BlueJ files
-*.ctxt
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files
+# Package files
 *.jar
 *.war
 *.nar
@@ -22,9 +32,9 @@
 *.tar.gz
 *.rar
 
-# Virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+# Virtual machine crash logs
 hs_err_pid*
 replay_pid*
 
-# .Env file
+# Env file
 .env

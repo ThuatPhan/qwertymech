@@ -7,10 +7,10 @@ import java.util.Date;
 import java.util.StringJoiner;
 import java.util.UUID;
 
+import org.example.common.exception.AppException;
+import org.example.common.exception.CommonErrorCode;
 import org.example.identityservice.entity.Role;
 import org.example.identityservice.entity.User;
-import org.example.identityservice.exception.AppException;
-import org.example.identityservice.exception.ErrorCode;
 import org.example.identityservice.repository.InvalidateTokenRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -68,18 +68,18 @@ public class JwtService {
         SignedJWT signedJWT = SignedJWT.parse(accessToken);
 
         if (invalidateTokenRepository.existsById(signedJWT.getJWTClaimsSet().getJWTID())) {
-            throw new AppException(ErrorCode.UNAUTHENTICATED);
+            throw new AppException(CommonErrorCode.UNAUTHENTICATED);
         }
 
         boolean isVerified = signedJWT.verify(verifier);
         if (!isVerified) {
-            throw new AppException(ErrorCode.UNAUTHENTICATED);
+            throw new AppException(CommonErrorCode.UNAUTHENTICATED);
         }
 
         if (!allowExpiredToken) {
             Date expiryTime = signedJWT.getJWTClaimsSet().getExpirationTime();
             if (expiryTime.before(new Date())) {
-                throw new AppException(ErrorCode.UNAUTHENTICATED);
+                throw new AppException(CommonErrorCode.UNAUTHENTICATED);
             }
         }
 

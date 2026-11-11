@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.example.common.exception.AppException;
+import org.example.common.exception.CommonErrorCode;
 import org.example.event.dto.NotificationEvent;
 import org.example.identityservice.constant.PredefinedRole;
 import org.example.identityservice.dto.request.UserCreationRequest;
@@ -12,8 +14,7 @@ import org.example.identityservice.dto.request.UserUpdateRequest;
 import org.example.identityservice.dto.response.UserResponse;
 import org.example.identityservice.entity.Role;
 import org.example.identityservice.entity.User;
-import org.example.identityservice.exception.AppException;
-import org.example.identityservice.exception.ErrorCode;
+import org.example.identityservice.exception.IdentityErrorCode;
 import org.example.identityservice.mapper.UserMapper;
 import org.example.identityservice.repository.RoleRepository;
 import org.example.identityservice.repository.UserRepository;
@@ -42,7 +43,7 @@ public class UserService {
 
     public UserResponse createUser(UserCreationRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
-            throw new AppException(ErrorCode.USER_ALREADY_EXISTS);
+            throw new AppException(IdentityErrorCode.USER_ALREADY_EXISTS);
         }
 
         User user = userMapper.toUser(request);
@@ -73,13 +74,14 @@ public class UserService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
 
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new AppException(ErrorCode.UNAUTHENTICATED));
+        User user =
+                userRepository.findByEmail(email).orElseThrow(() -> new AppException(CommonErrorCode.UNAUTHENTICATED));
 
         return userMapper.toUserResponse(user);
     }
 
     public UserResponse getUser(String id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.UNAUTHENTICATED));
+        User user = userRepository.findById(id).orElseThrow(() -> new AppException(CommonErrorCode.UNAUTHENTICATED));
 
         return userMapper.toUserResponse(user);
     }
@@ -98,12 +100,12 @@ public class UserService {
 
         Optional<User> userOpt = userRepository.findByEmail(email);
         if (userOpt.isEmpty()) {
-            throw new AppException(ErrorCode.UNAUTHENTICATED);
+            throw new AppException(CommonErrorCode.UNAUTHENTICATED);
         }
 
         User user = userOpt.get();
         if (userRepository.existsByEmailAndIdNot(user.getEmail(), user.getId())) {
-            throw new AppException(ErrorCode.USER_ALREADY_EXISTS);
+            throw new AppException(IdentityErrorCode.USER_ALREADY_EXISTS);
         }
 
         if (request.getPassword() != null && !request.getEmail().isBlank()) {

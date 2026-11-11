@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.example.common.exception.AppException;
 import org.example.event.dto.NotificationEvent;
 import org.example.orderservice.dto.request.OrderCreationRequest;
 import org.example.orderservice.dto.request.OrderItemCreationRequest;
@@ -16,8 +17,7 @@ import org.example.orderservice.entity.OrderItem;
 import org.example.orderservice.enums.OrderStatus;
 import org.example.orderservice.enums.PaymentMethod;
 import org.example.orderservice.enums.PaymentStatus;
-import org.example.orderservice.exception.AppException;
-import org.example.orderservice.exception.ErrorCode;
+import org.example.orderservice.exception.OrderErrorCode;
 import org.example.orderservice.mapper.OrderMapper;
 import org.example.orderservice.repository.OrderRepository;
 import org.example.orderservice.repository.httpClient.IdentityClient;
@@ -101,7 +101,7 @@ public class OrderService {
 
     @Cacheable(value = "orders", key = "'id::' + #id")
     public OrderResponse getOrder(Long id) {
-        Order order = orderRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_FOUND));
+        Order order = orderRepository.findById(id).orElseThrow(() -> new AppException(OrderErrorCode.ORDER_NOT_FOUND));
         Set<String> productIds =
                 order.getItems().stream().map(OrderItem::getProductId).collect(Collectors.toSet());
         return orderMapper.toOrderResponse(order, orderHelper.getProductsMapByIds(productIds));
@@ -127,7 +127,7 @@ public class OrderService {
 
     @CacheEvict(value = "orders", allEntries = true)
     public void markOrderAsPaid(Long id, PaymentStatus paymentStatus) {
-        Order order = orderRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_FOUND));
+        Order order = orderRepository.findById(id).orElseThrow(() -> new AppException(OrderErrorCode.ORDER_NOT_FOUND));
         if (paymentStatus.equals(PaymentStatus.SUCCESS)) {
             order.setStatus(OrderStatus.CONFIRMED);
         }

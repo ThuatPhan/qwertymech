@@ -3,7 +3,7 @@ package org.example.productservice.controller;
 import java.util.List;
 import java.util.Set;
 
-import org.example.productservice.dto.response.ApiResponse;
+import org.example.common.dto.ApiResponse;
 import org.example.productservice.dto.response.ProductResponse;
 import org.example.productservice.service.ProductService;
 import org.springframework.web.bind.annotation.*;

@@ -3,10 +3,10 @@ package org.example.cartservice.controller;
 import jakarta.validation.Valid;
 
 import org.example.cartservice.dto.request.CartItemCreationRequest;
+import org.example.cartservice.dto.response.ApiResponse;
 import org.example.cartservice.dto.response.CartItemResponse;
 import org.example.cartservice.dto.response.PageResponse;
 import org.example.cartservice.service.CartService;
-import org.example.common.dto.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 

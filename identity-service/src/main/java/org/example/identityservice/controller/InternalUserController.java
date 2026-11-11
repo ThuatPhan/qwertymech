@@ -1,6 +1,6 @@
 package org.example.identityservice.controller;
 
-import org.example.common.dto.ApiResponse;
+import org.example.identityservice.dto.response.ApiResponse;
 import org.example.identityservice.dto.response.UserResponse;
 import org.example.identityservice.service.UserService;
 import org.springframework.web.bind.annotation.*;

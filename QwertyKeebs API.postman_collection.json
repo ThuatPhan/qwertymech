@@ -1,0 +1,803 @@
+{
+	"info": {
+		"_postman_id": "35ae833c-22da-48f5-b229-9bf041455196",
+		"name": "QwertyKeebs API",
+		"description": "# 🚀 Get started here\n\nThis template guides you through CRUD operations (GET, POST, PUT, DELETE), variables, and tests.\n\n## 🔖 **How to use this template**\n\n#### **Step 1: Send requests**\n\nRESTful APIs allow you to perform CRUD operations using the POST, GET, PUT, and DELETE HTTP methods.\n\nThis collection contains each of these [request](https://learning.postman.com/docs/sending-requests/requests/) types. Open each request and click \"Send\" to see what happens.\n\n#### **Step 2: View responses**\n\nObserve the response tab for status code (200 OK), response time, and size.\n\n#### **Step 3: Send new Body data**\n\nUpdate or add new data in \"Body\" in the POST request. Typically, Body data is also used in PUT request.\n\n```\n{\n    \"name\": \"Add your name in the body\"\n}\n\n ```\n\n#### **Step 4: Update the variable**\n\nVariables enable you to store and reuse values in Postman. We have created a [variable](https://learning.postman.com/docs/sending-requests/variables/) called `base_url` with the sample request [https://postman-api-learner.glitch.me](https://postman-api-learner.glitch.me). Replace it with your API endpoint to customize this collection.\n\n#### **Step 5: Add tests in the \"Scripts\" tab**\n\nAdding tests to your requests can help you confirm that your API is working as expected. You can write test scripts in JavaScript and view the output in the \"Test Results\" tab.\n\n<img src=\"https://content.pstmn.io/fa30ea0a-373d-4545-a668-e7b283cca343/aW1hZ2UucG5n\" alt=\"\" height=\"1530\" width=\"2162\">\n\n## 💪 Pro tips\n\n- Use folders to group related requests and organize the collection.\n    \n- Add more [scripts](https://learning.postman.com/docs/writing-scripts/intro-to-scripts/) to verify if the API works as expected and execute workflows.\n    \n\n## 💡Related templates\n\n[API testing basics](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9a37a28-055b-49cd-8c7e-97494a21eb54&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[API documentation](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9c28f47-1253-44af-a2f3-20dce4da1f18&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[Authorization methods](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=31a9a6ed-4cdf-4ced-984c-d12c9aec1c27&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "33515245"
+	},
+	"item": [
+		{
+			"name": "Identity Service",
+			"item": [
+				{
+					"name": "Role APIs",
+					"item": [
+						{
+							"name": "Get Roles",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": ""
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": "http://localhost:8080/api/v1/identity/roles"
+							},
+							"response": []
+						},
+						{
+							"name": "Get Role",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": ""
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": "http://localhost:8080/api/v1/identity/roles/{{roleId}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Create Role",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": ""
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"STAFF\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8080/api/v1/identity/roles"
+							},
+							"response": []
+						},
+						{
+							"name": "Update Role",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": ""
+									}
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"EMPLOYEE\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8080/api/v1/identity/roles/{{roleId}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Role",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJtZWNoa2VlYnMuY29tIiwic3ViIjoiYWRtaW5AcXdlcnR5bWVjaC5jb20iLCJleHAiOjE3NjEwMzU2NzAsImlhdCI6MTc2MTAzMjA3MCwianRpIjoiMTQwNGM1MDUtZTQ0NS00OGM0LThhZDQtMWY1NTc4MTY5NjU5Iiwic2NvcGUiOiJBRE1JTiJ9.E7XG6zbsOe8OnWw0jtCtDuf58q2EekVXS68Z1de2y7oIoeBo4Ua4roFngLkPweA4HPZV7opOhpQ4c2pSRwyiiA"
+									}
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"EMPLOYEE\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8080/api/v1/identity/roles/{{roleId}}"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Permission APIs",
+					"item": [
+						{
+							"name": "Get Permissions",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": ""
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": "http://localhost:8080/api/v1/identity/permissions"
+							},
+							"response": []
+						},
+						{
+							"name": "Create Permission",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": ""
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Create Category\",\r\n    \"description\": \"Create category permission\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8080/api/v1/identity/permissions"
+							},
+							"response": []
+						},
+						{
+							"name": "Update Role",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": ""
+									}
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Create Category\",\r\n    \"description\": \"Permission to create category\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8080/api/v1/identity/permissions/{{roleId}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Role",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJtZWNoa2VlYnMuY29tIiwic3ViIjoiYWRtaW5AcXdlcnR5bWVjaC5jb20iLCJleHAiOjE3NjEwMzU2NzAsImlhdCI6MTc2MTAzMjA3MCwianRpIjoiMTQwNGM1MDUtZTQ0NS00OGM0LThhZDQtMWY1NTc4MTY5NjU5Iiwic2NvcGUiOiJBRE1JTiJ9.E7XG6zbsOe8OnWw0jtCtDuf58q2EekVXS68Z1de2y7oIoeBo4Ua4roFngLkPweA4HPZV7opOhpQ4c2pSRwyiiA"
+									}
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8080/api/v1/identity/roles/{{roleId}}"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "User APIs",
+					"item": [
+						{
+							"name": "Get Users",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": ""
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": "http://localhost:8080/api/v1/identity/users"
+							},
+							"response": []
+						},
+						{
+							"name": "Create User",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": ""
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"johndoe@qwertymech.com\",\r\n    \"password\": \"Bb123;;;\",\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"Doe\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8080/api/v1/identity/users/register"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Authenticate",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"admin@qwertymech.com\",\n    \"password\": \"Bb123;;;\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/v1/identity/auth/authenticate",
+						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\": \"eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJtZWNoa2VlYnMuY29tIiwic3ViIjoiYWRtaW5AcXdlcnR5bWVjaC5jb20iLCJleHAiOjE3NjEwMzY1NjksImlhdCI6MTc2MTAzMjk2OSwianRpIjoiOGExZGZkM2UtMTM3Mi00NjNmLWE5NDAtNmFiNmU4ZDYxZDJlIiwic2NvcGUiOiJBRE1JTiJ9.w7ZkzI-WuFmWM36Taas7lD7AqF6a7xy-jaj4qroAcWnViEvat6DWHJRWJFG5gqr1vL_zKoVAvfHbGMAn1gIYLw\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/v1/identity/auth/refresh-token"
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\": \"eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJtZWNoa2VlYnMuY29tIiwic3ViIjoiYWRtaW5AcXdlcnR5bWVjaC5jb20iLCJleHAiOjE3NjEwMzcwODMsImlhdCI6MTc2MTAzMzQ4MywianRpIjoiZTc0ZThlMGUtYjFhOC00ODcwLTllZWUtZjFhMDkzMjEyYmU2Iiwic2NvcGUiOiJBRE1JTiJ9.ffaSwuvaa0o5CYMzh1YHxymxOGzZHfu9oXjsipAH2wLclAsEna1tnD0AWa8eDxdrh3VN8RisEHgrc0eEobNf5g\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/v1/identity/auth/logout"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Product Service",
+			"item": [
+				{
+					"name": "Product APIs",
+					"item": [
+						{
+							"name": "Get Products",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/product/products?page={{page}}&size={{size}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"product",
+										"products"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "{{page}}"
+										},
+										{
+											"key": "size",
+											"value": "{{size}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Product",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "http://localhost:8080/api/v1/product/products/{{productId}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Create Product",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Successful POST request\", function () {",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": ""
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Bàn phím cơ Keychron K6\",\n  \"description\": \"Bàn phím cơ không dây 65%, switch Gateron Red, hỗ trợ kết nối Bluetooth và USB-C.\",\n  \"price\": 1890000,\n  \"images\": [\n    \"https://example.com/images/keychron-k6-front.jpg\",\n    \"https://example.com/images/keychron-k6-side.jpg\"\n  ],\n  \"stock\": 120,\n  \"category\": \"a9ba394f-4f43-4cdd-a075-f85fdc3cb0bd\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8080/api/v1/product/products",
+								"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+							},
+							"response": []
+						},
+						{
+							"name": "Update Product",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": ""
+									}
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"Bàn phím cơ Keychron K6\",\r\n  \"description\": \"Bàn phím cơ không dây 65%, switch Gateron Red, hỗ trợ kết nối Bluetooth và USB-C.\",\r\n  \"price\": 2190000,\r\n  \"images\": [\r\n    \"https://example.com/images/keychron-k6-front.jpg\",\r\n    \"https://example.com/images/keychron-k6-side.jpg\"\r\n  ],\r\n  \"stock\": 120,\r\n  \"category\": \"a9ba394f-4f43-4cdd-a075-f85fdc3cb0bd\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8080/api/v1/product/products/{{productId}}"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Category APIs",
+					"item": [
+						{
+							"name": "Get Categories",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJtZWNoa2VlYnMuY29tIiwic3ViIjoiYWRtaW5AcXdlcnR5bWVjaC5jb20iLCJleHAiOjE3NjEwMzE1MDYsImlhdCI6MTc2MTAyNzkwNiwianRpIjoiNGVlM2E0YTAtZDc1Yi00YWQzLTljMDgtYmJkN2U0MTQ5MzA5Iiwic2NvcGUiOiJBRE1JTiJ9.03W4CfUlLSLG9HLHhGWHYqNJgrVwoKFw1uwIAzWQo2LidV0kKkMbJcXNRkJY1GMFvikNimNrvBC-CyIGT7dCJg"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Keycap\",\r\n    \"image\": \"https://example.com/images/keycap.jpg\"\r\n}"
+								},
+								"url": "http://localhost:8080/api/v1/product/categories"
+							},
+							"response": []
+						},
+						{
+							"name": "Get Category",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "http://localhost:8080/api/v1/product/categories/{{categoryId}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Create Category",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Successful POST request\", function () {",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": ""
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Bàn Phím Cơ\",\n    \"image\": \"https://example.com/images/mechanical-keyboard.jpg\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8080/api/v1/product/categories",
+								"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+							},
+							"response": []
+						},
+						{
+							"name": "Update Category",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": ""
+									}
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Keycap\",\r\n    \"image\": \"https://example.com/images/keycap.jpg\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8080/api/v1/product/categories/{{categroryId}}"
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Cart Service",
+			"item": [
+				{
+					"name": "Get Items",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": ""
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/v1/cart/items"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Cart Item",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": ""
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"product\": \"89a49e8f-658d-482a-95dc-7a8a022f7562\",\n    \"quantity\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/v1/cart/add-item",
+						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Item Quantity",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": ""
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/cart/items/{{itemId}}?quantity={{quantity}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"cart",
+								"items",
+								"{{itemId}}"
+							],
+							"query": [
+								{
+									"key": "quantity",
+									"value": "{{quantity}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Item",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": ""
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8080/api/v1/cart/items/{{itemId}}"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Order Service",
+			"item": [
+				{
+					"name": "Get Orders",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": ""
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/order?page={{page}}&size={{size}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"order"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "{{page}}"
+								},
+								{
+									"key": "size",
+									"value": "{{size}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Order",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJtZWNoa2VlYnMuY29tIiwic3ViIjoiYWRtaW5AcXdlcnR5bWVjaC5jb20iLCJleHAiOjE3NjEwNDc5ODMsImlhdCI6MTc2MTA0NDM4MywianRpIjoiMjM2OWI4MzktYzQyZi00YTZmLTkxMmEtMTYyOTFjY2M2YzcwIiwic2NvcGUiOiJBRE1JTiJ9.sVh5YzDGjLaCi3A1OMa788xNFDyzrs0X1GRTwrkgytlOB1aygphi0hel0w6xmTaZoCbR2s9cfYSAA3COs2IHqA"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"shippingAddress\": \"123 Đường Nguyễn Huệ, Phường Bến Nghé, Quận 1, Thành phố Hồ Chí Minh\",\r\n  \"paymentMethod\": \"VN_PAY\",\r\n  \"items\": [\r\n    {\r\n      \"product\": \"89a49e8f-658d-482a-95dc-7a8a022f7562\",\r\n      \"quantity\": 2\r\n    },\r\n  ]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/v1/order/create"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Payment Service",
+			"item": [
+				{
+					"name": "Create Payment Url",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": ""
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"shippingAddress\": \"123 Đường Nguyễn Huệ, Phường Bến Nghé, Quận 1, Thành phố Hồ Chí Minh\",\r\n  \"paymentMethod\": \"VN_PAY\",\r\n  \"items\": [\r\n    {\r\n      \"product\": \"89a49e8f-658d-482a-95dc-7a8a022f7562\",\r\n      \"quantity\": 2\r\n    },\r\n  ]\r\n}\r\n"
+						},
+						"url": "http://localhost:8080/api/v1/payment/create-payment/251022091227347/vnpay"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": "1"
+		},
+		{
+			"key": "base_url",
+			"value": "https://template.postman-echo.com"
+		}
+	]
+}

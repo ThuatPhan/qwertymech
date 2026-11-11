@@ -3,12 +3,12 @@ package org.example.identityservice.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.example.common.exception.AppException;
 import org.example.identityservice.dto.request.PermissionCreationRequest;
 import org.example.identityservice.dto.request.PermissionUpdateRequest;
 import org.example.identityservice.dto.response.PermissionResponse;
 import org.example.identityservice.entity.Permission;
-import org.example.identityservice.exception.IdentityErrorCode;
+import org.example.identityservice.exception.AppException;
+import org.example.identityservice.exception.ErrorCode;
 import org.example.identityservice.mapper.PermissionMapper;
 import org.example.identityservice.repository.PermissionRepository;
 import org.springframework.stereotype.Service;
@@ -28,7 +28,7 @@ public class PermissionService {
 
     public PermissionResponse createPermission(PermissionCreationRequest request) {
         if (permissionRepository.existsByName(request.getName())) {
-            throw new AppException(IdentityErrorCode.PERMISSION_ALREADY_EXISTS);
+            throw new AppException(ErrorCode.PERMISSION_ALREADY_EXISTS);
         }
 
         Permission permission = permissionMapper.toPermission(request);
@@ -45,9 +45,8 @@ public class PermissionService {
     }
 
     public PermissionResponse updatePermission(String id, PermissionUpdateRequest request) {
-        Permission permission = permissionRepository
-                .findById(id)
-                .orElseThrow(() -> new AppException(IdentityErrorCode.PERMISSION_NOT_FOUND));
+        Permission permission =
+                permissionRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.PERMISSION_NOT_FOUND));
 
         permissionMapper.updatePermission(permission, request);
 
@@ -58,7 +57,7 @@ public class PermissionService {
 
     public void deletePermission(String id) {
         if (!permissionRepository.existsById(id)) {
-            throw new AppException(IdentityErrorCode.PERMISSION_NOT_FOUND);
+            throw new AppException(ErrorCode.PERMISSION_NOT_FOUND);
         }
 
         permissionRepository.deleteById(id);

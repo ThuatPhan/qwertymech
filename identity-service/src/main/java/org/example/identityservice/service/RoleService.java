@@ -4,13 +4,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.example.common.exception.AppException;
 import org.example.identityservice.dto.request.RoleCreationRequest;
 import org.example.identityservice.dto.request.RoleUpdateRequest;
 import org.example.identityservice.dto.response.RoleResponse;
 import org.example.identityservice.entity.Permission;
 import org.example.identityservice.entity.Role;
-import org.example.identityservice.exception.IdentityErrorCode;
+import org.example.identityservice.exception.AppException;
+import org.example.identityservice.exception.ErrorCode;
 import org.example.identityservice.mapper.RoleMapper;
 import org.example.identityservice.repository.PermissionRepository;
 import org.example.identityservice.repository.RoleRepository;
@@ -32,7 +32,7 @@ public class RoleService {
 
     public RoleResponse createRole(RoleCreationRequest request) {
         if (roleRepository.existsByName(request.getName())) {
-            throw new AppException(IdentityErrorCode.ROLE_ALREADY_EXISTS);
+            throw new AppException(ErrorCode.ROLE_ALREADY_EXISTS);
         }
 
         Role role = roleMapper.toRole(request);
@@ -48,7 +48,7 @@ public class RoleService {
     }
 
     public RoleResponse getRole(String id) {
-        Role role = roleRepository.findById(id).orElseThrow(() -> new AppException(IdentityErrorCode.ROLE_NOT_FOUND));
+        Role role = roleRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_FOUND));
         return roleMapper.toRoleResponse(role);
     }
 
@@ -57,10 +57,10 @@ public class RoleService {
     }
 
     public RoleResponse updateRole(String id, RoleUpdateRequest request) {
-        Role role = roleRepository.findById(id).orElseThrow(() -> new AppException(IdentityErrorCode.ROLE_NOT_FOUND));
+        Role role = roleRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_FOUND));
 
         if (roleRepository.existsByNameAndIdNot(id, request.getName())) {
-            throw new AppException(IdentityErrorCode.ROLE_ALREADY_EXISTS);
+            throw new AppException(ErrorCode.ROLE_ALREADY_EXISTS);
         }
 
         if (request.getPermissions() != null && !request.getPermissions().isEmpty()) {
@@ -78,7 +78,7 @@ public class RoleService {
 
     public void deleteRole(String id) {
         if (!roleRepository.existsById(id)) {
-            throw new AppException(IdentityErrorCode.ROLE_NOT_FOUND);
+            throw new AppException(ErrorCode.ROLE_NOT_FOUND);
         }
 
         roleRepository.deleteById(id);

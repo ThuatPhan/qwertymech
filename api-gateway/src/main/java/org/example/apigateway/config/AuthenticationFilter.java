@@ -1,8 +1,12 @@
 package org.example.apigateway.config;
 
-import java.util.Arrays;
-import java.util.List;
-
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.experimental.NonFinal;
+import lombok.extern.slf4j.Slf4j;
 import org.example.apigateway.dto.ApiResponse;
 import org.example.apigateway.service.IdentityService;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,16 +21,10 @@ import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.server.ServerWebExchange;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
-import lombok.experimental.NonFinal;
-import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Component
 @Slf4j
@@ -41,7 +39,10 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
     String API_PREFIX;
 
     String[] publicEndpoints = {
-        "/identity/auth/.*", "/identity/users/register", "/product/.*", "/payment/vnpay/callback"
+            "/identity/auth/.*",
+            "/identity/users/register",
+            "/product/.*",
+            "/payment/vnpay/callback"
     };
 
     @Override
@@ -59,16 +60,13 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
         String token = authHeader.getFirst().replace("Bearer ", "");
 
         // Call identity service to verify token
-        return identityService
-                .introspect(token)
-                .flatMap(response -> {
-                    if (response.getData().isValid()) {
-                        return chain.filter(exchange);
-                    } else {
-                        return unauthenticated(exchange.getResponse());
-                    }
-                })
-                .onErrorResume(throwable -> unauthenticated(exchange.getResponse()));
+        return identityService.introspect(token).flatMap(response -> {
+            if (response.getData().isValid()) {
+                return chain.filter(exchange);
+            } else {
+                return unauthenticated(exchange.getResponse());
+            }
+        }).onErrorResume(throwable -> unauthenticated(exchange.getResponse()));
     }
 
     @Override
@@ -82,8 +80,10 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
     }
 
     Mono<Void> unauthenticated(ServerHttpResponse response) {
-        ApiResponse<?> apiResponse =
-                ApiResponse.builder().code(1401).message("Unauthenticated").build();
+        ApiResponse<?> apiResponse = ApiResponse.builder()
+                .code(1401)
+                .message("Unauthenticated")
+                .build();
 
         String body;
         try {
@@ -95,6 +95,7 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
         response.setStatusCode(HttpStatus.UNAUTHORIZED);
         response.getHeaders().add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
 
-        return response.writeWith(Mono.just(response.bufferFactory().wrap(body.getBytes())));
+        return response.writeWith(
+                Mono.just(response.bufferFactory().wrap(body.getBytes())));
     }
 }

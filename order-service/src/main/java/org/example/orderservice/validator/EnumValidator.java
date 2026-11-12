@@ -14,7 +14,6 @@ import jakarta.validation.Payload;
 public @interface EnumValidator {
     String message() default "Value is not valid for this enum";
 
-    // Declare the enum class which is use for validation
     Class<? extends Enum<?>> enumClass();
 
     Class<?>[] groups() default {};

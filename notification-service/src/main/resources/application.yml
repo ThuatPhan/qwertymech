@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: identity-service
+    name: notification-service
   kafka:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9094}
     consumer:

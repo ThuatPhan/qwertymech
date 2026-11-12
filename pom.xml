@@ -20,13 +20,14 @@
         <spotless.version>2.43.0</spotless.version>
         <org.mapstruct.version>1.6.3</org.mapstruct.version>
         <resend.version>3.1.0</resend.version>
+        <keycloak-admin-client.version>26.0.7</keycloak-admin-client.version>
         <spring-cloud.version>2025.0.0</spring-cloud.version>
         <maven-enforcer-plugin.version>3.5.0</maven-enforcer-plugin.version>
     </properties>
 
     <modules>
         <module>common-lib</module>
-        <module>identity-service</module>
+        <module>user-service</module>
         <module>product-service</module>
         <module>cart-service</module>
         <module>order-service</module>
@@ -72,6 +73,11 @@
                 <groupId>com.resend</groupId>
                 <artifactId>resend-java</artifactId>
                 <version>${resend.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.keycloak</groupId>
+                <artifactId>keycloak-admin-client</artifactId>
+                <version>${keycloak-admin-client.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

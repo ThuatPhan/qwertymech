@@ -70,7 +70,7 @@ docker-compose up -d
 
 Keycloak runs at `http://localhost:8180` (admin console: `admin` / `admin`). The `qwertymech` realm is imported automatically with `ADMIN`/`USER` roles, the `qwertymech-client` client, and a seeded admin account (`admin@qwertymech.com` / `Admin@123`).
 
-The API Gateway will be accessible at `http://localhost:8080`.
+**Kong Gateway** (DB-less, declarative config in `kong.yml`) is the single entry point at `http://localhost:8000` — it terminates routing, CORS, rate limiting and JWT verification (Keycloak RS256 public key). Services are not exposed to the host; only Kong, Keycloak and the databases are.
 
 ### 4\. Authentication Flow (Authorization Code + PKCE)
 
@@ -95,4 +95,6 @@ Clients authenticate **directly with Keycloak** — the backend services are pur
 5. Client calls the API with: Authorization: Bearer <access_token>
 ```
 
-The gateway and every service validate the JWT locally against the Keycloak JWKS endpoint (`JWKS_URI`); roles come from the `realm_access.roles` claim and drive `@PreAuthorize` checks. Direct access grants (password grant) are disabled on `qwertymech-client` — PKCE is enforced.
+Kong verifies the JWT at the edge (jwt plugin, RS256 public key from the realm) and every service validates it again against the Keycloak JWKS endpoint (`JWKS_URI`) — defense in depth. Roles come from the `realm_access.roles` claim and drive `@PreAuthorize` checks. Direct access grants (password grant) are disabled on `qwertymech-client` — PKCE is enforced.
+
+Note: the Kong jwt credential embeds the realm's current public key. If the realm is re-imported (new key pair), re-fetch the key from `GET http://localhost:8180/realms/qwertymech` and update `kong.yml`.

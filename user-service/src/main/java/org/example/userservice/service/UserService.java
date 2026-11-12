@@ -67,7 +67,6 @@ public class UserService {
 
     public UserResponse getUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        // With Keycloak tokens the principal name is the "sub" claim (the Keycloak user id)
         User user = userRepository
                 .findByKeycloakId(authentication.getName())
                 .orElseThrow(() -> new AppException(CommonErrorCode.UNAUTHENTICATED));

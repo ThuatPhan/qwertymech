@@ -1,0 +1,141 @@
+_format_version: "3.0"
+_transform: true
+
+upstreams:
+  - name: user-service
+    targets:
+      - target: user-service:8081
+  - name: product-service
+    targets:
+      - target: product-service:8082
+  - name: cart-service
+    targets:
+      - target: cart-service:8083
+  - name: order-service
+    targets:
+      - target: order-service:8084
+  - name: payment-service
+    targets:
+      - target: payment-service:8085
+
+services:
+  - name: user-service
+    host: user-service
+    protocol: http
+    port: 8081
+    routes:
+      - name: users-public-register
+        paths:
+          - /api/v1/users/register
+        strip_path: false
+      - name: users-protected
+        paths:
+          - /api/v1/users
+        strip_path: false
+        plugins:
+          - name: jwt
+
+  - name: product-service
+    host: product-service
+    protocol: http
+    port: 8082
+    routes:
+      - name: products-public-read
+        paths:
+          - /api/v1/product
+        strip_path: false
+        methods:
+          - GET
+          - OPTIONS
+      - name: products-internal
+        paths:
+          - /api/v1/product/internal
+        strip_path: false
+      - name: products-protected
+        paths:
+          - /api/v1/product
+        strip_path: false
+        methods:
+          - POST
+          - PUT
+          - DELETE
+          - PATCH
+        plugins:
+          - name: jwt
+
+  - name: cart-service
+    host: cart-service
+    protocol: http
+    port: 8083
+    routes:
+      - name: cart-protected
+        paths:
+          - /api/v1/cart
+        strip_path: false
+        plugins:
+          - name: jwt
+
+  - name: order-service
+    host: order-service
+    protocol: http
+    port: 8084
+    routes:
+      - name: order-protected
+        paths:
+          - /api/v1/order
+        strip_path: false
+        plugins:
+          - name: jwt
+
+  - name: payment-service
+    host: payment-service
+    protocol: http
+    port: 8085
+    routes:
+      - name: payment-public-callback
+        paths:
+          - /api/v1/payment/vnpay/callback
+        strip_path: false
+      - name: payment-protected
+        paths:
+          - /api/v1/payment
+        strip_path: false
+        plugins:
+          - name: jwt
+
+plugins:
+  - name: cors
+    config:
+      origins:
+        - "*"
+      methods:
+        - GET
+        - POST
+        - PUT
+        - DELETE
+        - PATCH
+        - OPTIONS
+      headers:
+        - Content-Type
+        - Authorization
+      max_age: 3600
+  - name: rate-limiting
+    config:
+      limit_by: ip
+      second: 20
+
+consumers:
+  - username: keycloak-qwertymech
+    jwt_secrets:
+      - key: http://localhost:8180/realms/qwertymech
+        algorithm: RS256
+        rsa_public_key: |
+          -----BEGIN PUBLIC KEY-----
+          MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAr5ntoRDMH9c2qGUnWUtV
+          oOqcfA1xFFor6CJrPyA8F1VPpYbRRje+XKNRMZa9oOl+Z1xblAG5zY5WF4kb7gjw
+          kMdywU8hrXvc9AXykj9AeCkZXrBi6s+fYHdjpji2XcBAWx3hCHw0TNvx7WhuRrDT
+          PwLeuywk0fglYmBUVy1X3a1Qjcm7ak9cbgQjBzvdOeeveGZRv+5SwtWL/ZnCkBQY
+          ii1W6Sii0aJS5Tmd6AXlj5JwPka3x8DHabFRc3FoaXg9EjqbkKWdzUIvoW1gGNbU
+          n84KS0Z3YL3jIsxuA6q9HXkwK7x7VXRSmpaDIBkXAsmE0fmuGs4qSCb6b8SLNkfH
+          HwIDAQAB
+          -----END PUBLIC KEY-----

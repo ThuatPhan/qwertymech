@@ -66,26 +66,22 @@ services:
     networks:
       - qwertymech-net
 
-  api-gateway:
-    build:
-      context: ./api-gateway
-    container_name: api-gateway
-    hostname: api-gateway
+  kong:
+    image: kong:3.9
+    container_name: kong
+    hostname: kong
     restart: always
-    ports:
-      - "8080:8080"
-    depends_on:
-      - user-service
-      - product-service
-      - cart-service
-      - order-service
-      - payment-service
     environment:
-      - USER_SERVICE_URL=http://user-service:8081
-      - PRODUCT_SERVICE_URL=http://product-service:8082
-      - CART_SERVICE_URL=http://cart-service:8083
-      - ORDER_SERVICE_URL=http://order-service:8084
-      - PAYMENT_SERVICE_URL=http://payment-service:8085
+      - KONG_DATABASE=off
+      - KONG_ADMIN_LISTEN=0.0.0.0:8001
+      - KONG_DECLARATIVE_CONFIG=/kong/kong.yml
+      - KONG_PROXY_ACCESS_LOG=/dev/stdout
+      - KONG_ADMIN_ACCESS_LOG=/dev/stdout
+    ports:
+      - "8000:8000"
+      - "8001:8001"
+    volumes:
+      - ./kong.yml:/kong/kong.yml
     networks:
       - qwertymech-net
 
@@ -95,8 +91,6 @@ services:
     container_name: user-service
     hostname: user-service
     restart: always
-    ports:
-      - "8081:8081"
     depends_on:
       - postgres
       - kafka
@@ -116,12 +110,11 @@ services:
     container_name: product-service
     hostname: product-service
     restart: always
-    ports:
-      - "8082:8082"
     depends_on:
       - postgres
     environment:
       - DB_URL=jdbc:postgresql://postgres:5432/product_service
+      - REDIS_HOST=redis
       - JWKS_URI=http://keycloak:8180/realms/qwertymech/protocol/openid-connect/certs
     networks:
       - qwertymech-net
@@ -132,8 +125,6 @@ services:
     container_name: cart-service
     hostname: cart-service
     restart: always
-    ports:
-      - "8083:8083"
     depends_on:
       - postgres
       - product-service
@@ -141,8 +132,8 @@ services:
     environment:
       - DB_URL=jdbc:postgresql://postgres:5432/cart_service
       - JWKS_URI=http://keycloak:8180/realms/qwertymech/protocol/openid-connect/certs
-      - USER_SERVICE_URL=http://user-service:8081/users
-      - PRODUCT_SERVICE_URL=http://product-service:8082/product
+      - USER_SERVICE_URL=http://user-service:8081/api/v1/users
+      - PRODUCT_SERVICE_URL=http://product-service:8082/api/v1/product
     networks:
       - qwertymech-net
 
@@ -152,8 +143,6 @@ services:
     container_name: order-service
     hostname: order-service
     restart: always
-    ports:
-      - "8084:8084"
     depends_on:
       - postgres
       - kafka
@@ -164,9 +153,9 @@ services:
       - DB_URL=jdbc:postgresql://postgres:5432/order_service
       - JWKS_URI=http://keycloak:8180/realms/qwertymech/protocol/openid-connect/certs
       - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
-      - REDIS_HORT=redis
-      - USER_SERVICE_URL=http://user-service:8081/users
-      - PRODUCT_SERVICE_URL=http://product-service:8082/product
+      - REDIS_HOST=redis
+      - USER_SERVICE_URL=http://user-service:8081/api/v1/users
+      - PRODUCT_SERVICE_URL=http://product-service:8082/api/v1/product
     networks:
       - qwertymech-net
 
@@ -176,8 +165,6 @@ services:
     container_name: payment-service
     hostname: payment-service
     restart: always
-    ports:
-      - "8085:8085"
     depends_on:
       - kafka
       - order-service
@@ -186,7 +173,7 @@ services:
     environment:
       - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
       - JWKS_URI=http://keycloak:8180/realms/qwertymech/protocol/openid-connect/certs
-      - ORDER_SERVICE_URL=http://order-service:8084
+      - ORDER_SERVICE_URL=http://order-service:8084/api/v1/order
     networks:
       - qwertymech-net
 
@@ -196,8 +183,6 @@ services:
     container_name: notification-service
     hostname: notification-service
     restart: always
-    ports:
-      - "8888:8888"
     depends_on:
       - kafka
     env_file:

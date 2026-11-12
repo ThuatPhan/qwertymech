@@ -1,6 +1,6 @@
 server:
   servlet:
-    context-path: /payment
+    context-path: /api/v1/payment
   port: 8085
 spring:
   application:
@@ -28,4 +28,4 @@ payment:
 
 app:
   services:
-    order: ${ORDER_SERVICE_URL:http://localhost:8084}
+    order: ${ORDER_SERVICE_URL:http://localhost:8084/api/v1/order}

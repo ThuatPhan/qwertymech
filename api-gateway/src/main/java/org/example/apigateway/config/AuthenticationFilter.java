@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.example.apigateway.dto.ApiResponse;
-import org.example.apigateway.service.IdentityService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -14,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
+import org.springframework.security.oauth2.jwt.ReactiveJwtDecoder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.server.ServerWebExchange;
@@ -33,16 +33,14 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthenticationFilter implements GlobalFilter, Ordered {
-    IdentityService identityService;
+    ReactiveJwtDecoder jwtDecoder;
     ObjectMapper objectMapper;
 
     @NonFinal
     @Value("${app.api-prefix}")
     String API_PREFIX;
 
-    String[] publicEndpoints = {
-        "/identity/auth/.*", "/identity/users/register", "/product/.*", "/payment/vnpay/callback"
-    };
+    String[] publicEndpoints = {"/users/register", "/product/.*", "/payment/vnpay/callback"};
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
@@ -50,7 +48,6 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
             return chain.filter(exchange);
         }
 
-        // Get token from authorization header
         List<String> authHeader = exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION);
         if (CollectionUtils.isEmpty(authHeader)) {
             return unauthenticated(exchange.getResponse());
@@ -58,16 +55,9 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
 
         String token = authHeader.getFirst().replace("Bearer ", "");
 
-        // Call identity service to verify token
-        return identityService
-                .introspect(token)
-                .flatMap(response -> {
-                    if (response.getData().isValid()) {
-                        return chain.filter(exchange);
-                    } else {
-                        return unauthenticated(exchange.getResponse());
-                    }
-                })
+        return jwtDecoder
+                .decode(token)
+                .then(chain.filter(exchange))
                 .onErrorResume(throwable -> unauthenticated(exchange.getResponse()));
     }
 

@@ -1,0 +1,62 @@
+{
+  "realm": "qwertymech",
+  "enabled": true,
+  "registrationAllowed": true,
+  "loginWithEmailAllowed": true,
+  "roles": {
+    "realm": [
+      {
+        "name": "ADMIN",
+        "description": "Full administrative access"
+      },
+      {
+        "name": "USER",
+        "description": "Regular user"
+      }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "qwertymech-client",
+      "name": "QwertyMech Client",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": false,
+      "attributes": {
+        "pkce.code.challenge.method": "S256"
+      },
+      "redirectUris": [
+        "http://localhost:*",
+        "http://localhost:3000/*"
+      ],
+      "webOrigins": ["http://localhost:3000", "http://localhost"],      "defaultClientScopes": [
+        "profile",
+        "email",
+        "roles",
+        "web-origins",
+        "acr",
+        "basic"
+      ]
+    }
+  ],
+  "users": [
+    {
+      "username": "admin@qwertymech.com",
+      "email": "admin@qwertymech.com",
+      "firstName": "System",
+      "lastName": "Admin",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Admin@123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["ADMIN"]
+    }
+  ]
+}

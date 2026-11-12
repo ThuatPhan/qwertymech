@@ -13,8 +13,8 @@ import org.example.cartservice.exception.CartErrorCode;
 import org.example.cartservice.mapper.CartItemMapper;
 import org.example.cartservice.repository.CartItemRepository;
 import org.example.cartservice.repository.CartRepository;
-import org.example.cartservice.repository.httpClient.IdentityClient;
 import org.example.cartservice.repository.httpClient.ProductClient;
+import org.example.cartservice.repository.httpClient.UserClient;
 import org.example.common.exception.AppException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CartService {
-    IdentityClient identityClient;
+    UserClient userClient;
     ProductClient productClient;
     CartRepository cartRepository;
     CartItemRepository cartItemRepository;
@@ -43,7 +43,7 @@ public class CartService {
     public CartItemResponse addCartItem(CartItemCreationRequest request) {
         ProductResponse product =
                 productClient.getProductById(request.getProduct()).getData();
-        UserResponse user = identityClient.getUser().getData();
+        UserResponse user = userClient.getUser().getData();
 
         Cart cart = cartRepository
                 .getByUserId(user.getId())
@@ -68,7 +68,7 @@ public class CartService {
     }
 
     public PageResponse<CartItemResponse> getCartItems(int page, int size) {
-        UserResponse user = identityClient.getUser().getData();
+        UserResponse user = userClient.getUser().getData();
 
         Optional<Cart> cartOpt = cartRepository.getByUserId(user.getId());
         if (cartOpt.isEmpty()) {
@@ -89,7 +89,6 @@ public class CartService {
                         .map(CartItem::getProductId)
                         .collect(Collectors.toSet()))
                 .getData();
-        // Convert to Map for faster product lookup
         Map<String, ProductResponse> productsMap =
                 products.stream().collect(Collectors.toMap(ProductResponse::getId, product -> product));
 

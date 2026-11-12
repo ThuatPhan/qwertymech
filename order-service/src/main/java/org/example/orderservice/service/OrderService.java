@@ -20,7 +20,7 @@ import org.example.orderservice.enums.PaymentStatus;
 import org.example.orderservice.exception.OrderErrorCode;
 import org.example.orderservice.mapper.OrderMapper;
 import org.example.orderservice.repository.OrderRepository;
-import org.example.orderservice.repository.httpClient.IdentityClient;
+import org.example.orderservice.repository.httpClient.UserClient;
 import org.example.orderservice.util.OrderHelper;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -45,7 +45,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class OrderService {
-    IdentityClient identityClient;
+    UserClient userClient;
     OrderRepository orderRepository;
     OrderMapper orderMapper;
     OrderHelper orderHelper;
@@ -57,7 +57,7 @@ public class OrderService {
     public OrderResponse createOrder(OrderCreationRequest request) {
         Order order = orderMapper.toOrder(request);
 
-        UserResponse user = identityClient.getUser().getData();
+        UserResponse user = userClient.getUser().getData();
         order.setUserId(user.getId());
 
         order.setId(orderHelper.generateOrderId());
@@ -109,7 +109,7 @@ public class OrderService {
 
     @Cacheable(value = "orders", key = "'page::' + #page + '::size::' + #size + '::all::' + #all")
     public PageResponse<OrderResponse> getOrders(int page, int size, boolean all) {
-        UserResponse user = identityClient.getUser().getData();
+        UserResponse user = userClient.getUser().getData();
 
         Sort sort = Sort.by("createdAt").descending();
         Pageable pageable = PageRequest.of(page - 1, size, sort);

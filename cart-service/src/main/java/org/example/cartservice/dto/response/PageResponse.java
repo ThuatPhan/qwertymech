@@ -33,7 +33,7 @@ public class PageResponse<T> {
 
     public static <E, R> PageResponse<R> from(Page<E> pageData, Function<E, R> mapper) {
         return PageResponse.<R>builder()
-                .currentPage(pageData.getNumber() + 1) // Index start at 0
+                .currentPage(pageData.getNumber() + 1)
                 .pageSize(pageData.getSize())
                 .totalElements(pageData.getTotalElements())
                 .totalPages(pageData.getTotalPages())

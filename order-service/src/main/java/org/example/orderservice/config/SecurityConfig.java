@@ -18,22 +18,19 @@ import lombok.experimental.FieldDefaults;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class SecurityConfig {
-    // spotless:off
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.authorizeHttpRequests(request -> request
-                .requestMatchers("/internal/**").permitAll()
-                .anyRequest().authenticated());
+        httpSecurity.authorizeHttpRequests(request ->
+                request.requestMatchers("/internal/**").permitAll().anyRequest().authenticated());
 
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
 
-        httpSecurity.oauth2ResourceServer(oauth2 -> oauth2
-                .jwt(jwtConfigurer -> jwtConfigurer.jwtAuthenticationConverter(jwtAuthenticationConverter()))
+        httpSecurity.oauth2ResourceServer(oauth2 -> oauth2.jwt(
+                        jwtConfigurer -> jwtConfigurer.jwtAuthenticationConverter(jwtAuthenticationConverter()))
                 .authenticationEntryPoint(new CustomAuthEntryPoint()));
 
         return httpSecurity.build();
     }
-    // spotless:on
 
     @Bean
     JwtAuthenticationConverter jwtAuthenticationConverter() {

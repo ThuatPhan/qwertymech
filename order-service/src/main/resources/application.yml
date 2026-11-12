@@ -1,7 +1,7 @@
 server:
-  port: 8084
   servlet:
-    context-path: /order
+    context-path: /api/v1/order
+  port: 8084
 
 spring:
   application:
@@ -41,5 +41,5 @@ spring:
 
 app:
   services:
-    user: ${USER_SERVICE_URL:http://localhost:8081/users}
-    product: ${PRODUCT_SERVICE_URL:http://localhost:8082/product}
+    user: ${USER_SERVICE_URL:http://localhost:8081/api/v1/users}
+    product: ${PRODUCT_SERVICE_URL:http://localhost:8082/api/v1/product}
